@@ -332,7 +332,7 @@ def run_payroll():
     # if os.path.exists('paylog_old.txt'):
     #     os.remove('paylog_old.txt')
     for emp in EMPLOYEES:
-        emp.issue_payment(pay_log_file)
+        emp.issue_payment(PAY_LOG_FILE)
 
 
 def find_employee_by_id(emp_id):
