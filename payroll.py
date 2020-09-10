@@ -5,12 +5,10 @@ CS-2450-601
 Professor Sharp
 """
 
-import os
 from abc import ABC, abstractmethod
 
-PAY_LOGFILE = 'paylog.txt'
+PAY_LOG_FILE = 'paylog.txt'
 EMPLOYEES = []
-
 
 class Employee:
     """
@@ -66,13 +64,13 @@ class Employee:
     def direct_method(self, routing_number, account_number):
         """
         Assigns the DirectMethod payment method to employee
-        :param str routing_number: The employee's bank routing number
-        :param str account_number: The employee's bank account number
+        :param float routing_number: The employee's bank routing number
+        :param float account_number: The employee's bank account number
         :rtype: None
         """
         self.paymethod = DirectMethod(self, routing_number, account_number)
 
-    def issue_payment(self):
+    def issue_payment(self, file_name):
         """
         Calculates payment and issues it to employee using their payment method
         :rtype: None
@@ -83,7 +81,7 @@ class Employee:
         if self.paymethod is None:
             raise TypeError('Cannot issue payment: Employee has no pay method.')
         pay_amount = self.classification.compute_pay()
-        return self.paymethod.issue(pay_amount)
+        return self.paymethod.issue(pay_amount, file_name)
 
 
 class PaymentMethod(ABC):
@@ -99,9 +97,10 @@ class PaymentMethod(ABC):
         self.employee = employee
 
     @abstractmethod
-    def issue(self, pay_amount):
+    def issue(self, pay_amount, file_name):
         """
         Issues payment to employee
+        :param str file_name: Pay log file name
         :param float pay_amount: Amount to pay employee
         :rtype: None
         """
@@ -122,13 +121,14 @@ class DirectMethod(PaymentMethod):
         self.account_number = account_number.strip()
         super().__init__(employee)
 
-    def issue(self, pay_amount):
+    def issue(self, pay_amount, file_name):
         """
-        Issues payment to employee
+        Issues payment to employee, appends transaction to payment log
+        :param str file_name: Payment log file name
         :param float pay_amount: Amount to pay employee
         :rtype: None
         """
-        with open('paylog.txt', 'a') as file:
+        with open(file_name, 'a') as file:
             file.write(f'Transferred {pay_amount:.2f} for {self.employee.name} to'
                        f' {self.account_number} at {self.routing_number}\n')
 
@@ -143,13 +143,14 @@ class MailMethod(PaymentMethod):
     # Disable too few public methods warning: Only one public method is required
     # pylint: disable=too-few-public-methods
 
-    def issue(self, pay_amount):
+    def issue(self, pay_amount, file_name):
         """
-        Issues payment to employee
+        Issues payment to employee, appends transaction to payment log
+        :param str file_name: Payment log file name
         :param float pay_amount: Amount to pay employee
         :rtype: None
         """
-        with open('paylog.txt', 'a') as file:
+        with open(file_name, 'a') as file:
             file.write(f'Mailing {pay_amount:.2f} to {self.employee.name} at'
                        f' {self.employee.address} {self.employee.city} {self.employee.state}'
                        f' {self.employee.zipcode}\n')
@@ -186,7 +187,7 @@ class Hourly(Classification):
     def add_timecard(self, timecard_hours):
         """
         Adds recorded timeclock hours between punch in and punch out
-        :param int timecard_hours: Hours worked
+        :param float timecard_hours: Hours worked
         :rtype: None
         """
         self.timecards.append(float(timecard_hours))
@@ -295,7 +296,7 @@ def process_timecards():
             employee = find_employee_by_id(data[0])
             if employee is None:
                 raise Exception('Employee not found')
-            if employee.classification is not Hourly:
+            if not isinstance(employee.classification, Hourly):
                 raise TypeError('Employee classification is not Hourly')
             for i in range(1, len(data)):
                 employee.classification.add_timecard(float(data[i].strip()))
@@ -315,7 +316,7 @@ def process_receipts():
             employee = find_employee_by_id(data[0])
             if employee is None:
                 raise Exception('Employee not found')
-            if employee.classification is not Commissioned:
+            if not isinstance(employee.classification, Commissioned):
                 raise TypeError('Employee classification is not Commissioned')
             for i in range(1, len(data)):
                 employee.classification.add_receipt(float(data[i].strip()))
@@ -326,18 +327,18 @@ def run_payroll():
     Removes existing payroll files and generates and issues employee payments
     :rtype: None
     """
-    if os.path.exists('paylog.txt'):
-        os.remove('paylog.txt')
-    if os.path.exists('paylog_old.txt'):
-        os.remove('paylog_old.txt')
+    # if os.path.exists('paylog.txt'):
+    #     os.remove('paylog.txt')
+    # if os.path.exists('paylog_old.txt'):
+    #     os.remove('paylog_old.txt')
     for emp in EMPLOYEES:
-        emp.issue_payment()
+        emp.issue_payment(pay_log_file)
 
 
 def find_employee_by_id(emp_id):
     """
     Searches EMPLOYEES array for employee with matching id
-    :param int emp_id: Employee id to search by
+    :param str emp_id: Employee id to search by
     :rtype: Employee|None
     """
     employees = [emp for emp in EMPLOYEES if emp.id_ == emp_id]
