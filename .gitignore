@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Payroll log files
+paylog.txt
+payroll_old.txt
