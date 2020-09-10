@@ -131,3 +131,6 @@ dmypy.json
 # Payroll log files
 paylog.txt
 payroll_old.txt
+
+# Jetbrains .idea files
+/.idea
