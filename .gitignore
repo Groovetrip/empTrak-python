@@ -134,3 +134,6 @@ payroll_old.txt
 
 # Jetbrains .idea files
 /.idea
+
+# MacOS metadata
+.DS_Store
