@@ -1,15 +1,17 @@
 """
-
+Model file
 """
 
 
 class Model:
     """
-
+    Model class
+    Handles CRUD operations on database tables
     """
     def __init__(self):
         self.table = None
         self.attributes = []
+
 
     @classmethod
     def all(cls):
@@ -18,6 +20,7 @@ class Model:
         :rtype: list
         """
         pass
+
 
     @classmethod
     def find(cls, identifier: int):
@@ -28,6 +31,7 @@ class Model:
         """
         pass
 
+
     @classmethod
     def create(cls, data: dict):
         """
@@ -36,6 +40,7 @@ class Model:
         :rtype: Model
         """
         pass
+
 
     def update(self, data: dict):
         """
@@ -47,6 +52,7 @@ class Model:
         # TODO: Decide if this should be save(), and have an update() class method
 
         return self
+
 
     def delete(self):
         """

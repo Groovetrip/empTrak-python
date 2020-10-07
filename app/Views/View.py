@@ -1,24 +1,23 @@
 """
-
+View file
 """
 
-from tkinter import Tk
+from tkinter import Tk, Frame
 from abc import abstractmethod
-from ..Controller import Controller
 
 
-class View:
+class View(Frame):
     """
     Parent View class
-    Requires
+    Applies template to all children
+    Requires render method in children
     """
-    def __init__(self, controller: Controller, root: Tk, data: dict = None):
-        if data is None:
-            data = {}
-        self.controller = controller
+    def __init__(self, root: Tk, data: dict = None, **kw):
+        super().__init__(**kw)
         self.root = root
         self.data = data
         self.apply_template()
+
 
     def apply_template(self):
         """
@@ -26,6 +25,7 @@ class View:
         Navbar, background, etc.
         """
         pass
+
 
     @abstractmethod
     def render(self):

@@ -1,5 +1,5 @@
 """
-
+Employee Model file
 """
 
 from .Model import Model
@@ -7,7 +7,8 @@ from .Model import Model
 
 class Employee(Model):
     """
-
+    Employee Model class
+    Connects to employees table data
     """
     def __init__(self):
         super().__init__()

@@ -1,5 +1,5 @@
 """
-
+User Model file
 """
 
 from .Model import Model
@@ -7,7 +7,8 @@ from .Model import Model
 
 class User(Model):
     """
-
+    User Model class
+    Connects to users table data
     """
     def __init__(self):
         super().__init__()
