@@ -1,6 +1,6 @@
 import os
 import shutil
-from payroll import *
+from resources.payroll import *
 
 def main():
     load_employees()
