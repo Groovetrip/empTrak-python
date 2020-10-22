@@ -4,11 +4,11 @@ Controller class file
 
 from typing import Type
 from tkinter import Tk
-from .Models.Employee import Employee
-from .Views.View import View
-from .Views.Login import Login
-from .Views.ShowEmployee import ShowEmployee
-from .Views.ListEmployees import ListEmployees
+from Models.Employee import Employee
+from Views.View import View
+from Views.Login import Login
+from Views.ShowEmployee import ShowEmployee
+from Views.ListEmployees import ListEmployees
 
 
 class Controller:
