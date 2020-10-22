@@ -2,7 +2,7 @@
 Login View file
 """
 
-from .View import View
+from View import View
 
 
 class Login(View):

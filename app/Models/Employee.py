@@ -2,7 +2,7 @@
 Employee Model file
 """
 
-from .Model import Model
+from Model import Model
 
 
 class Employee(Model):
