@@ -5,7 +5,7 @@ Compile distributions from this file
 
 # import sqlite3
 from os import path
-import tkinter as tk
+import tkinter
 from app.Controller import Controller
 
 
@@ -19,18 +19,12 @@ def main():
     """
     global DB_NAME
 
-    root = tk.Tk()
+    root = tkinter.Tk()
 
     # TODO: Set tkinter window dimensions, title, etc.
 
     app = Controller(root)
-    app.withdraw()
     app.mainloop()
-
-    if path.exists(f'./database/{DB_NAME}.db'):
-        setup(app)
-    else:
-        app.show_login()
 
 
 def setup(app: Controller):

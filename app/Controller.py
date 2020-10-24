@@ -4,7 +4,9 @@ Controller class file
 
 from typing import Type
 from tkinter import Tk
+
 from .Models.Employee import Employee
+
 from .Views.View import View
 from .Views.Login import Login
 from .Views.ShowEmployee import ShowEmployee
@@ -23,20 +25,11 @@ class Controller:
         self.root = root
         self.show_login()
 
-
     def mainloop(self):
         """
         Call mainloop on root
         """
         self.root.mainloop()
-
-
-    def withdraw(self):
-        """
-        Call withdraw on root
-        """
-        self.root.withdraw()
-
 
     def view(self, view_class: Type[View], data: dict = None):
         """
@@ -47,18 +40,32 @@ class Controller:
 
         if data is None:
             data = {}
-        data['controller'] = self
+
+        if self.user is None:
+            view_class = Login
+
+        emit_callback = self.handle_emit
 
         # TODO: Clear current root GUI
 
-        if self.user is None:
-            view = Login(self, self.root)
-        else:
-            view = view_class(self.root, data)
-
+        view = view_class(self.handle_emit, self.root, data)
         view.render()
         return
 
+    def handle_emit(self, key: str, data: dict = None):
+        """
+
+        """
+        if key == 'show_dashboard':
+            self.show_dashboard()
+
+        if key == 'list_employees':
+            self.list_employees()
+
+        if key == 'login':
+            self.login(data)
+
+        return
 
     def login(self, data: dict):
         """
@@ -67,14 +74,12 @@ class Controller:
         """
         return
 
-
     def show_setup(self):
         """
         Display first-time setup view
         """
         # self.view(Setup)
         return
-
 
     def show_login(self):
         """
@@ -83,6 +88,12 @@ class Controller:
         self.view(Login)
         return
 
+    def show_dashboard(self):
+        """
+        Display dashboard view
+        """
+        # self.view(Dashboard)
+        return
 
     def show_employee(self, emp_id: int):
         """
@@ -95,8 +106,7 @@ class Controller:
         })
         return
 
-
-    def index_employees(self):
+    def list_employees(self):
         """
         Display employees index view
         """
