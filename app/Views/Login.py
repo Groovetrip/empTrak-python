@@ -2,7 +2,8 @@
 Login View file
 """
 
-from View import View
+from .View import View
+import tkinter
 
 
 class Login(View):
@@ -13,9 +14,11 @@ class Login(View):
     def __init__(self, *args):
         super().__init__(*args)
 
-
     def render(self):
         """
         Render components for login view
         """
+        button = tkinter.Button(self.root, text='Login')
+        button.config(command=lambda: self.emit('login'))
+        button.pack()
         return
