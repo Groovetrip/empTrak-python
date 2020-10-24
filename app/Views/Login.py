@@ -18,7 +18,6 @@ class Login(View):
         """
         Render components for login view
         """
-        print('Login.render()')
         button = tkinter.Button(self.root, text='Login')
         button.config(command=lambda: self.emit('login'))
         button.pack()
